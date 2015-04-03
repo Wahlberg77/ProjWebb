@@ -31,5 +31,6 @@ namespace Db_Vandrarhem
         public virtual DbSet<Rum> Rums { get; set; }
         public virtual DbSet<RumsBokning> RumsBoknings { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<BokningsVy> BokningsVies { get; set; }
     }
 }

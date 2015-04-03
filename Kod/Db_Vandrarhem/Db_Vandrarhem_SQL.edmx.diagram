@@ -14,6 +14,7 @@
         <AssociationConnector Association="VandrarhemModel.FK_RumsBokning_Bokningar" ManuallyRouted="false" />
         <AssociationConnector Association="VandrarhemModel.FK_KundBokning_Kund" ManuallyRouted="false" />
         <AssociationConnector Association="VandrarhemModel.FK_RumsBokning_Rum" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="VandrarhemModel.BokningsVy" Width="1.5" PointX="8.5" PointY="1.125" FillColor="Yellow" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

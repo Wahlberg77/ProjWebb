@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="VandrarhemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="VandrarhemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Bokningar">
           <Key>
             <PropertyRef Name="BokningsId" />
@@ -58,6 +58,26 @@
           <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Vandrarhem.dbo.BokningsVy' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="BokningsVy">
+          <Key>
+            <PropertyRef Name="ForNamn" />
+            <PropertyRef Name="EfterNamn" />
+            <PropertyRef Name="RumsNummer" />
+            <PropertyRef Name="AntalBaddar" />
+            <PropertyRef Name="KundBokningsId" />
+            <PropertyRef Name="InCheckning" />
+            <PropertyRef Name="UtCheckning" />
+          </Key>
+          <Property Name="ForNamn" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EfterNamn" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RumsNummer" Type="int" Nullable="false" />
+          <Property Name="AntalBaddar" Type="int" Nullable="false" />
+          <Property Name="KundBokningsId" Type="int" Nullable="false" />
+          <Property Name="InCheckning" Type="datetime" Nullable="false" />
+          <Property Name="UtCheckning" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="FK_KundBokning_Bokningar">
           <End Role="Bokningar" Type="Self.Bokningar" Multiplicity="1" />
@@ -114,6 +134,17 @@
           <EntitySet Name="Rum" EntityType="Self.Rum" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RumsBokning" EntityType="Self.RumsBokning" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BokningsVy" EntityType="Self.BokningsVy" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [BokningsVy].[ForNamn] AS [ForNamn], 
+    [BokningsVy].[EfterNamn] AS [EfterNamn], 
+    [BokningsVy].[RumsNummer] AS [RumsNummer], 
+    [BokningsVy].[AntalBaddar] AS [AntalBaddar], 
+    [BokningsVy].[KundBokningsId] AS [KundBokningsId], 
+    [BokningsVy].[InCheckning] AS [InCheckning], 
+    [BokningsVy].[UtCheckning] AS [UtCheckning]
+    FROM [dbo].[BokningsVy] AS [BokningsVy]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_KundBokning_Bokningar" Association="Self.FK_KundBokning_Bokningar">
             <End Role="Bokningar" EntitySet="Bokningar" />
             <End Role="KundBokning" EntitySet="KundBokning" />
@@ -131,8 +162,7 @@
             <End Role="RumsBokning" EntitySet="RumsBokning" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="VandrarhemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -269,7 +299,26 @@
             <End Role="Rum" EntitySet="Rums" />
             <End Role="RumsBokning" EntitySet="RumsBoknings" />
           </AssociationSet>
+          <EntitySet Name="BokningsVies" EntityType="VandrarhemModel.BokningsVy" />
         </EntityContainer>
+        <EntityType Name="BokningsVy">
+          <Key>
+            <PropertyRef Name="ForNamn" />
+            <PropertyRef Name="EfterNamn" />
+            <PropertyRef Name="RumsNummer" />
+            <PropertyRef Name="AntalBaddar" />
+            <PropertyRef Name="KundBokningsId" />
+            <PropertyRef Name="InCheckning" />
+            <PropertyRef Name="UtCheckning" />
+          </Key>
+          <Property Name="ForNamn" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EfterNamn" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RumsNummer" Type="Int32" Nullable="false" />
+          <Property Name="AntalBaddar" Type="Int32" Nullable="false" />
+          <Property Name="KundBokningsId" Type="Int32" Nullable="false" />
+          <Property Name="InCheckning" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UtCheckning" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -333,6 +382,19 @@
                 <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
                 <ScalarProperty Name="version" ColumnName="version" />
                 <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BokningsVies">
+            <EntityTypeMapping TypeName="VandrarhemModel.BokningsVy">
+              <MappingFragment StoreEntitySet="BokningsVy">
+                <ScalarProperty Name="UtCheckning" ColumnName="UtCheckning" />
+                <ScalarProperty Name="InCheckning" ColumnName="InCheckning" />
+                <ScalarProperty Name="KundBokningsId" ColumnName="KundBokningsId" />
+                <ScalarProperty Name="AntalBaddar" ColumnName="AntalBaddar" />
+                <ScalarProperty Name="RumsNummer" ColumnName="RumsNummer" />
+                <ScalarProperty Name="EfterNamn" ColumnName="EfterNamn" />
+                <ScalarProperty Name="ForNamn" ColumnName="ForNamn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
